@@ -8,6 +8,7 @@ type Product = {
   imageUrl: string;
 };
 
+// this code will come from the backend
 const productList: Product[] = [
   {
     id: 1,

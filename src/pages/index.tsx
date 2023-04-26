@@ -1,9 +1,9 @@
 import SuspenseWrapper from "../components/SuspenseWrapper";
-import WelcomePage from "../components/WelcomePage";
+import LoginPage from "../components/LoginPage";
 export default function Home() {
   return (
     <SuspenseWrapper>
-      <WelcomePage />
+      <LoginPage />
     </SuspenseWrapper>
   );
 }
