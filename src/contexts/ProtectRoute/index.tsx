@@ -11,8 +11,10 @@ export const ProtectRoute = ({ children }: Props) => {
   const { user } = useAuth();
 
   useEffect(() => {
-    if (!user) {
-      router.push("/");
+    if (typeof window !== "undefined") {
+      if (!localStorage.getItem("user")) {
+        router.push("/");
+      }
     }
   }, [router, user]);
 

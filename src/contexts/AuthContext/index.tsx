@@ -5,12 +5,14 @@ interface AuthContextValue {
   user: string | null;
   login: (username: string, password: string) => Promise<string>;
   logout: () => void;
+  getUser: () => string;
 }
 
 const AuthContext = React.createContext<AuthContextValue>({
   user: null,
   login: async () => "",
   logout: () => {},
+  getUser: () => "",
 });
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
@@ -23,12 +25,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   );
 
   useEffect(() => {
-    console.log("useEffect");
-    if (typeof window !== "undefined") {
-      const user = localStorage.getItem("user");
-      if (user) {
-        setUser(user);
-      }
+    const user = localStorage.getItem("user");
+    if (user) {
+      setUser(user);
     }
   }, []);
 
@@ -49,15 +48,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const logout = () => {
-    console.log("logout");
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     setUser(null);
   };
 
+  const getUser = () => {
+    if (typeof window !== "undefined") {
+      const user = localStorage.getItem("user") || "";
+      return user;
+    } else {
+      return user || "";
+    }
+  };
+
   const authValue = useMemo(
-    () => ({ user, login, logout }),
-    [user, login, logout]
+    () => ({ user, login, logout, getUser }),
+    [user, login, logout, getUser]
   );
 
   return (
@@ -66,6 +73,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 }
 
 export function useAuth() {
-  const { login, logout, user } = React.useContext(AuthContext);
-  return { login, logout, user };
+  const { login, logout, user, getUser } = React.useContext(AuthContext);
+  return { login, logout, user, getUser };
 }

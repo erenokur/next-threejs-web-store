@@ -4,5 +4,6 @@
   "signIn": "Sign in",
   "login": "Login",
   "enterPassword": "Enter password",
-  "enterEmail": "Enter email"
+  "enterEmail": "Enter email",
+  "headerTitle": "3D web store"
 }
