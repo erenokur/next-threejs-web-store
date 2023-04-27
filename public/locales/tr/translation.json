@@ -1,4 +1,8 @@
 {
   "greeting": "3D web mağazasına hoş geldiniz!",
-  "entranceButton": "giriş yap"
+  "entranceButton": "giriş yap",
+  "signIn": "Giriş",
+  "login": "Giriş yap",
+  "enterPassword": "Şifre girin",
+  "enterEmail": "E-posta girin"
 }

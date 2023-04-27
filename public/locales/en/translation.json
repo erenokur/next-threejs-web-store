@@ -1,4 +1,8 @@
 {
   "greeting": "Welcome to 3D web store!",
-  "entranceButton": "enter"
+  "entranceButton": "enter",
+  "signIn": "Sign in",
+  "login": "Login",
+  "enterPassword": "Enter password",
+  "enterEmail": "Enter email"
 }
