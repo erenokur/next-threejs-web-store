@@ -10,36 +10,40 @@ interface AuthContextValue {
 const AuthContext = React.createContext<AuthContextValue>({
   user: null,
   login: async () => "",
-  logout: () => { },
+  logout: () => {},
 });
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<string | null>(null);
-  const apiClient = new AxiosClient(`${process.env.API_BASE_URL}/auth`, {
-    "Content-Type": "application/json",
-  });
+  const apiClient = new AxiosClient(
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth`,
+    {
+      "Content-Type": "application/json",
+    }
+  );
 
   useEffect(() => {
     console.log("useEffect");
-    if(typeof window !== "undefined") {
+    if (typeof window !== "undefined") {
       const user = localStorage.getItem("user");
-      if(user) {
+      if (user) {
         setUser(user);
       }
     }
-
   }, []);
 
   const login = async (username: string, password: string): Promise<string> => {
-    console.log("login");
+    console.log("login to:" + process.env.NEXT_PUBLIC_API_BASE_URL);
     try {
-      const response = await apiClient.get("/login");
-      console.log(JSON.stringify(response));
+      const response = await apiClient.post("/login", {
+        email: username,
+        password: password,
+      });
       localStorage.setItem("token", response.data.accessToken);
       localStorage.setItem("user", response.data.username);
       setUser(response.data.username);
       return response.data.accessToken;
-    } catch(error) {
+    } catch (error) {
       console.log(error);
       throw new Error("Login failed");
     }
