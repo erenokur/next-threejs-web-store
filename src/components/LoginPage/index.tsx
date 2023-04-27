@@ -1,10 +1,13 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { useAuth } from "@/contexts/AuthContext";
-import { useTranslation } from "react-i18next";
-import Header from "@/components/Header";
+import { useTranslation } from "next-i18next";
+import dynamic from "next/dynamic";
 
 const LoginPage = () => {
+  const Header = dynamic(() => import("@/components/Header"), {
+    ssr: false,
+  });
   const router = useRouter();
   const { login } = useAuth();
   const [email, setEmail] = useState("");
