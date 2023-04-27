@@ -10,7 +10,7 @@ interface AuthContextValue {
 const AuthContext = React.createContext<AuthContextValue>({
   user: null,
   login: async () => "",
-  logout: () => {},
+  logout: () => { },
 });
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
@@ -21,10 +21,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     console.log("useEffect");
-    const user = localStorage.getItem("user");
-    if (user) {
-      setUser(user);
+    if(typeof window !== "undefined") {
+      const user = localStorage.getItem("user");
+      if(user) {
+        setUser(user);
+      }
     }
+
   }, []);
 
   const login = async (username: string, password: string): Promise<string> => {
@@ -36,7 +39,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       localStorage.setItem("user", response.data.username);
       setUser(response.data.username);
       return response.data.accessToken;
-    } catch (error) {
+    } catch(error) {
       console.log(error);
       throw new Error("Login failed");
     }

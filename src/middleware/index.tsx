@@ -8,8 +8,8 @@ export class AxiosClient {
       baseURL,
       headers: {
         ...headers,
-        // Set the Authorization header to the JWT token
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        // Set the Authorization header to the JWT token if it is available
+        Authorization: `Bearer ${typeof window !== 'undefined' && localStorage.getItem("token")}`,
       },
     });
 
@@ -43,3 +43,4 @@ export class AxiosClient {
     return this.instance.delete(url, config);
   }
 }
+
