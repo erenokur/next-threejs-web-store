@@ -33,7 +33,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const login = async (username: string, password: string): Promise<string> => {
-    console.log("login to:" + process.env.NEXT_PUBLIC_API_BASE_URL);
     try {
       const response = await apiClient.post("/login", {
         email: username,
