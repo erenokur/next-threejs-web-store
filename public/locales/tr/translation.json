@@ -3,6 +3,8 @@
   "entranceButton": "giriş yap",
   "signIn": "Giriş",
   "login": "Giriş yap",
+  "logoutButton": "Çıkış yap",
+  "loginButton": "Giriş yap",
   "enterPassword": "Şifre girin",
   "enterEmail": "E-posta girin",
   "headerTitle": "3D web mağazası"

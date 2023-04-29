@@ -7,11 +7,9 @@ import i18n from "@/i18n";
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <AuthProvider>
-      <ProtectRoute>
-        <I18nextProvider i18n={i18n}>
-          <Component {...pageProps} />
-        </I18nextProvider>
-      </ProtectRoute>
+      <I18nextProvider i18n={i18n}>
+        <Component {...pageProps} />
+      </I18nextProvider>
     </AuthProvider>
   );
 }

@@ -19,7 +19,7 @@ if (!i18n.isInitialized) {
       backend: {
         loadPath: "/locales/{{lng}}/{{ns}}.json",
       },
-      missingKeyHandler: function (lngs, namespace, key, fallbackValue) {
+      missingKeyHandler: function (lng, namespace, key, fallbackValue) {
         console.warn(`Missing Translation Key ${key}`);
       },
     });

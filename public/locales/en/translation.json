@@ -3,6 +3,8 @@
   "entranceButton": "enter",
   "signIn": "Sign in",
   "login": "Login",
+  "logoutButton": "Logout",
+  "loginButton": "Login",
   "enterPassword": "Enter password",
   "enterEmail": "Enter email",
   "headerTitle": "3D web store"

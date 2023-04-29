@@ -1,5 +1,6 @@
-import React from "react";
-
+import React, { useEffect } from "react";
+import { useAuth } from "@/contexts/AuthContext";
+import { useRouter } from "next/router";
 type Product = {
   id: number;
   name: string;
@@ -55,6 +56,14 @@ const productList: Product[] = [
 ];
 
 const ProductList: React.FC = () => {
+  const { user, getUser } = useAuth();
+  const router = useRouter();
+  useEffect(() => {
+    if (!getUser()) {
+      router.push("/");
+    }
+    console.log("user changed" + user);
+  }, [user]);
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 px-4 sm:px-6 lg:px-8 py-8">
       {productList.map((product) => (

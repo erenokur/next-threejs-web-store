@@ -5,9 +5,6 @@ import { useTranslation } from "next-i18next";
 import dynamic from "next/dynamic";
 
 const LoginPage = () => {
-  const Header = dynamic(() => import("@/components/header"), {
-    ssr: false,
-  });
   const router = useRouter();
   const { login } = useAuth();
   const [email, setEmail] = useState("");
@@ -26,7 +23,7 @@ const LoginPage = () => {
     event.preventDefault();
     try {
       let result = await login(email, password);
-      if (result) router.push("/product-list");
+      if (result) router.push("/");
     } catch (error) {
       console.log(error);
     }
@@ -38,7 +35,6 @@ const LoginPage = () => {
 
   return (
     <div className="flex flex-col h-screen\">
-      <Header />
       <div className="flex-1 flex items-center justify-center">
         <div className="flex h-screen bg-black-200">
           <div className="m-auto w-full max-w-md">

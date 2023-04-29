@@ -41,7 +41,7 @@ export default async function handleLogin(
 
     res.status(200).json({
       message: "Logged in successfully",
-      token,
+      accessToken: token,
       username: user.username,
       role: user.username,
     });

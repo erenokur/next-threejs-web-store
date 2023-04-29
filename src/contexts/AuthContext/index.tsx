@@ -18,7 +18,7 @@ const AuthContext = React.createContext<AuthContextValue>({
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<string | null>(null);
   const apiClient = new AxiosClient(
-    `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth`,
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth`,
     {
       "Content-Type": "application/json",
     }
