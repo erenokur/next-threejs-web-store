@@ -5,7 +5,7 @@ import { useTranslation } from "next-i18next";
 import dynamic from "next/dynamic";
 
 const LoginPage = () => {
-  const Header = dynamic(() => import("@/components/Header"), {
+  const Header = dynamic(() => import("@/components/header"), {
     ssr: false,
   });
   const router = useRouter();

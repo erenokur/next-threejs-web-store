@@ -18,5 +18,5 @@ export const ProtectRoute = ({ children }: Props) => {
     }
   }, [router, user]);
 
-  return user ? children : null;
+  return user ? <>{children}</> : <></>;
 };
