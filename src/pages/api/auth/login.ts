@@ -1,7 +1,5 @@
-// pages/api/login.ts
-
 import Cors from "cors";
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, UserWhereUniqueInput } from "@prisma/client";
 import bcrypt from "bcrypt";
 import { NextApiRequest, NextApiResponse } from "next";
 import jwt from "jsonwebtoken";
@@ -11,7 +9,10 @@ const cors = Cors({
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
 });
 
-const handleLogin = async (req: NextApiRequest, res: NextApiResponse) => {
+export default async function handleLogin(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   try {
     await new Promise((resolve, reject) => {
       cors(req, res, (err) => {
@@ -21,6 +22,7 @@ const handleLogin = async (req: NextApiRequest, res: NextApiResponse) => {
     });
     const { email, password } = req.body;
 
+    const userWhere: UserWhereUniqueInput = { email };
     const user = await prisma.user.findUnique({ where: { email } });
 
     if (!user) {
@@ -41,6 +43,4 @@ const handleLogin = async (req: NextApiRequest, res: NextApiResponse) => {
   } catch (error: any) {
     res.status(401).json({ message: error.message });
   }
-};
-
-export default handleLogin;
+}

@@ -27,7 +27,11 @@ yarn-error.log*
 # local env files
 .env*.local
 .env
+
 prisma/dev.db*
+
+thunder-tests/*
+thunder-tests/thunderActivity.json
 
 # vercel
 .vercel
@@ -35,3 +39,4 @@ prisma/dev.db*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
