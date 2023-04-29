@@ -7,5 +7,12 @@
   "loginButton": "Login",
   "enterPassword": "Enter password",
   "enterEmail": "Enter email",
-  "headerTitle": "3D web store"
+  "headerTitle": "3D web store",
+  "register": "Register",
+  "username": "Username",
+  "enterUsername": "Enter username",
+  "userType": "User type",
+  "selectUserType": "Select user type",
+  "seller": "Seller",
+  "buyer": "Buyer"
 }

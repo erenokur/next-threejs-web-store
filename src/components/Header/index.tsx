@@ -74,15 +74,11 @@ const Header = ({ hideLoggingInfo }: { hideLoggingInfo?: boolean }) => {
           </div>
         )}
         {hideLoggingInfo ? null : userChanged()}
-        {/* {user ? (
+        {user ? (
           <button className="text-white ml-4" onClick={() => logoutRequest()}>
-            {t("logoutButton")} 
+            {user}
           </button>
-        ) : (
-          <button className="text-white ml-4" onClick={() => loginRequest()}>
-            {t("loginButton")}
-          </button>
-        )} */}
+        ) : null}
       </div>
     </div>
   );

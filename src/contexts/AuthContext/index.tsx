@@ -4,6 +4,12 @@ import { AxiosClient } from "@/middleware";
 interface AuthContextValue {
   user: string | null;
   login: (username: string, password: string) => Promise<string>;
+  register: (
+    email: string,
+    password: string,
+    username: string,
+    role: string
+  ) => Promise<string>;
   logout: () => void;
   getUser: () => string;
 }
@@ -11,6 +17,7 @@ interface AuthContextValue {
 const AuthContext = React.createContext<AuthContextValue>({
   user: null,
   login: async () => "",
+  register: async () => "",
   logout: () => {},
   getUser: () => "",
 });
@@ -40,10 +47,33 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       localStorage.setItem("token", response.data.accessToken);
       localStorage.setItem("user", response.data.username);
       setUser(response.data.username);
-      return response.data.accessToken;
+      return response.data.username;
     } catch (error) {
       console.log(error);
-      throw new Error("Login failed");
+      return "";
+    }
+  };
+
+  const register = async (
+    username: string,
+    password: string,
+    email: string,
+    role: string
+  ): Promise<string> => {
+    try {
+      const response = await apiClient.post("/register", {
+        email: email,
+        password: password,
+        username: username,
+        role: role,
+      });
+      localStorage.setItem("token", response.data.accessToken);
+      localStorage.setItem("user", response.data.username);
+      setUser(response.data.username);
+      return response.data.username;
+    } catch (error) {
+      console.log(error);
+      return "";
     }
   };
 
@@ -63,8 +93,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const authValue = useMemo(
-    () => ({ user, login, logout, getUser }),
-    [user, login, logout, getUser]
+    () => ({ user, login, logout, getUser, register }),
+    [user, login, logout, getUser, register]
   );
 
   return (
@@ -73,6 +103,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 }
 
 export function useAuth() {
-  const { login, logout, user, getUser } = React.useContext(AuthContext);
-  return { login, logout, user, getUser };
+  const { login, logout, user, getUser, register } =
+    React.useContext(AuthContext);
+  return { login, logout, user, getUser, register };
 }

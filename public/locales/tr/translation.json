@@ -7,5 +7,12 @@
   "loginButton": "Giriş yap",
   "enterPassword": "Şifre girin",
   "enterEmail": "E-posta girin",
-  "headerTitle": "3D web mağazası"
+  "headerTitle": "3D web mağazası",
+  "register": "Kayıt ol",
+  "username": "Kullanıcı adı",
+  "enterUsername": "Kullanıcı adı girin",
+  "userType": "Kullanıcı tipi",
+  "selectUserType": "Kullanıcı tipi seçin",
+  "seller": "Satıcı",
+  "buyer": "Alıcı"
 }

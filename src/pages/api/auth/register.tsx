@@ -51,7 +51,7 @@ export default async function handleRegister(
     // Generate a JWT token
     const token = jwt.sign({ userId: newUser.id }, process.env.API_KEY || "");
 
-    res.status(201).json({ token });
+    res.status(201).json({ accessToken: token, username: newUser.username });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
