@@ -1,6 +1,9 @@
+import React from "react";
+import Dropdown from "@/components/dropDownMenu";
 import { useTranslation } from "next-i18next";
 import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/router";
+import { FaUserAlt } from "react-icons/fa";
 
 const Header = ({ hideLoggingInfo }: { hideLoggingInfo?: boolean }) => {
   const router = useRouter();
@@ -22,63 +25,62 @@ const Header = ({ hideLoggingInfo }: { hideLoggingInfo?: boolean }) => {
   const gotoHome = () => {
     router.push("/");
   };
-  const userChanged = () => {
-    return (
-      <div>
-        {user ? (
-          <button className="text-white ml-4" onClick={() => logoutRequest()}>
-            {t("logoutButton")}
-          </button>
-        ) : (
-          <button className="text-white ml-4" onClick={() => loginRequest()}>
-            {t("loginButton")}
-          </button>
-        )}
-      </div>
-    );
+
+  const renderUserOptions = () => {
+    if (!user) return null;
+
+    const welcome = {
+      label: `Welcome, ${user}`,
+      onClick: logout,
+    };
+
+    const logoutMessage = {
+      label: "Logout",
+      onClick: logout,
+    };
+
+    return <Dropdown options={[welcome, logoutMessage]} />;
   };
+
+  const renderUserButton = () => {
+    if (!user) {
+      return (
+        <button className="text-white ml-4" onClick={() => loginRequest()}>
+          {t("loginButton")}
+        </button>
+      );
+    } else {
+      return <div className="text-white ml-4"></div>;
+    }
+  };
+
   return (
     <div className="flex items-center justify-between bg-gray py-4 px-6">
-      <button
-        className="text-lg font-bold"
-        onClick={() => {
-          gotoHome();
-        }}
-      >
+      <button className="text-lg font-bold" onClick={() => gotoHome()}>
         {t("headerTitle")}
       </button>
-      <div className="flex items-center justify-between bg-gray py-4 px-4">
-        {i18n.language === "en" ? (
+      <div className="flex items-center ml-4">
+        {i18n.language === "tr" ? (
           <div
-            onClick={() => changeLanguage("tr")}
-            className="flex items-center cursor-pointer"
+            className="flex items-center cursor-pointer mr-4"
+            onClick={() => changeLanguage("en")}
           >
-            <img
-              src="images/TR.svg"
-              alt="flag"
-              className="w-6 h-6 pointer-events-none"
-            />
-            <button className="mr-2 text-white pointer-events-none">TR</button>
+            <img src="images/US.svg" alt="flag" className="w-6 h-6" />
+            <button className="ml-2 text-white pointer-events-none">EN</button>
           </div>
         ) : (
           <div
-            onClick={() => changeLanguage("en")}
-            className="flex items-center cursor-pointer"
+            className="flex items-center cursor-pointer mr-4"
+            onClick={() => changeLanguage("tr")}
           >
-            <img
-              src="images/US.svg"
-              alt="flag"
-              className="w-6 h-6 pointer-events-none"
-            />
-            <button className="mr-2 text-white pointer-events-none">EN</button>
+            <img src="images/TR.svg" alt="flag" className="w-6 h-6" />
+            <button className="ml-2 text-white pointer-events-none">TR</button>
           </div>
         )}
-        {hideLoggingInfo ? null : userChanged()}
-        {user ? (
-          <button className="text-white ml-4" onClick={() => logoutRequest()}>
-            {user}
-          </button>
-        ) : null}
+        {!hideLoggingInfo && (
+          <div className="user-options">{renderUserOptions()}</div>
+        )}
+        {hideLoggingInfo ? null : renderUserButton()}
       </div>
     </div>
   );
