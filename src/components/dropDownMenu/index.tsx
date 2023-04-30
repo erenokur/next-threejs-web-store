@@ -54,7 +54,7 @@ const Dropdown: React.FC<DropdownProps> = ({ options }) => {
               ) => (
                 <button // Use any HTML element of your choice
                   key={index}
-                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                  className="block w-48 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
                   onClick={onClick}
                   role="menuitem"
                 >

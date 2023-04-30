@@ -1,5 +1,5 @@
 import React, { useMemo, useEffect, useState } from "react";
-import { AxiosClient } from "@/middleware";
+import { AxiosClient } from "@/middleware/api";
 
 interface AuthContextValue {
   user: string | null;
@@ -12,6 +12,7 @@ interface AuthContextValue {
   ) => Promise<string>;
   logout: () => void;
   getUser: () => string;
+  getToken: () => string;
 }
 
 const AuthContext = React.createContext<AuthContextValue>({
@@ -20,10 +21,12 @@ const AuthContext = React.createContext<AuthContextValue>({
   register: async () => "",
   logout: () => {},
   getUser: () => "",
+  getToken: () => "",
 });
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<string | null>(null);
+  const [token, setToken] = useState<string | null>(null);
   const apiClient = new AxiosClient(
     `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth`,
     {
@@ -47,6 +50,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       localStorage.setItem("token", response.data.accessToken);
       localStorage.setItem("user", response.data.username);
       setUser(response.data.username);
+      setToken(response.data.accessToken);
       return response.data.username;
     } catch (error) {
       console.log(error);
@@ -70,6 +74,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       localStorage.setItem("token", response.data.accessToken);
       localStorage.setItem("user", response.data.username);
       setUser(response.data.username);
+      setToken(response.data.accessToken);
       return response.data.username;
     } catch (error) {
       console.log(error);
@@ -92,9 +97,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  const getToken = () => {
+    if (typeof window !== "undefined") {
+      const token = localStorage.getItem("token") || "";
+      return token;
+    } else {
+      return token || "";
+    }
+  };
+
   const authValue = useMemo(
-    () => ({ user, login, logout, getUser, register }),
-    [user, login, logout, getUser, register]
+    () => ({ user, login, logout, getUser, register, getToken }),
+    [user, login, logout, getUser, register, getToken]
   );
 
   return (
@@ -103,7 +117,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 }
 
 export function useAuth() {
-  const { login, logout, user, getUser, register } =
+  const { login, logout, user, getUser, register, getToken } =
     React.useContext(AuthContext);
-  return { login, logout, user, getUser, register };
+  return { login, logout, user, getUser, register, getToken };
 }

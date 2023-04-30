@@ -26,12 +26,16 @@ const Header = ({ hideLoggingInfo }: { hideLoggingInfo?: boolean }) => {
     router.push("/");
   };
 
+  const gotoProfile = () => {
+    router.push("/profile");
+  };
+
   const renderUserOptions = () => {
     if (!user) return null;
 
     const welcome = {
       label: `Welcome, ${user}`,
-      onClick: logout,
+      onClick: gotoProfile,
     };
 
     const logoutMessage = {
