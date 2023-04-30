@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect } from "react";
-import SuspenseWrapper from "../components/suspenseWrapper";
+import SuspenseWrapper from "@/components/suspenseWrapper";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import { useAuth } from "@/contexts/AuthContext";
