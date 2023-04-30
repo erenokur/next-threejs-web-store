@@ -7,9 +7,12 @@ import { productList } from "@/components/productList/tempProducts";
 export default function Product() {
   const router = useRouter();
   const { productId } = router.query;
-  const ProductThreeD = dynamic(() => import("@/components/3DProduct"), {
-    ssr: false,
-  });
+  const ProductViewPage = dynamic(
+    () => import("@/components/productViewPage"),
+    {
+      ssr: false,
+    }
+  );
   const Header = dynamic(() => import("@/components/header"), {
     ssr: false,
   });
@@ -19,7 +22,7 @@ export default function Product() {
       <div>
         <Header />
       </div>
-      <ProductThreeD />
+      <ProductViewPage />
     </SuspenseWrapper>
   );
 }

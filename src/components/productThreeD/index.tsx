@@ -5,10 +5,12 @@ import React, { useRef } from "react";
 const ProductThreeD = () => {
   const boxGeometry = new THREE.BoxGeometry(2, 2, 2);
   const boxMaterial = new THREE.MeshLambertMaterial({ color: 0xffffff });
-  const boxMesh = useRef();
+  const boxMesh = useRef<THREE.Mesh>(null);
   useFrame(() => {
-    boxMesh.current.rotation.x += 0.01;
-    boxMesh.current.rotation.y += 0.01;
+    if (boxMesh.current) {
+      boxMesh.current.rotation.x += 0.01;
+      boxMesh.current.rotation.y += 0.01;
+    }
   });
   return (
     <mesh
@@ -20,16 +22,4 @@ const ProductThreeD = () => {
   );
 };
 
-const App = () => {
-  return (
-    <div style={{ height: "100vh" }}>
-      <Canvas>
-        <ambientLight />
-        <pointLight position={[10, 10, 10]} />
-        <ProductThreeD />
-      </Canvas>
-    </div>
-  );
-};
-
-export default App;
+export default ProductThreeD;
