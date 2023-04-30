@@ -37,6 +37,10 @@ export default async function handleRegister(
 
     // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
+    if (!username && !email && !password && !role) {
+      res.status(400).json({ message: "Please fill all the fields" });
+      return;
+    }
 
     // Create the user
     const newUser = await prisma.user.create({

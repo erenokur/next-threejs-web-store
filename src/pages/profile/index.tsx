@@ -14,10 +14,9 @@ export default function Home() {
   const { user, getUser } = useAuth();
   const router = useRouter();
   useEffect(() => {
-    if (getUser()) {
-      console.log("welcome: " + user);
+    if (!getUser()) {
+      router.push("/login");
     }
-    console.log("user changed" + user);
   }, [user]);
   return (
     <SuspenseWrapper>
