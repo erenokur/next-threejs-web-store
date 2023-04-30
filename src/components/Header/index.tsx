@@ -69,7 +69,7 @@ const Header = ({ hideLoggingInfo }: { hideLoggingInfo?: boolean }) => {
             className="flex items-center cursor-pointer mr-4"
             onClick={() => changeLanguage("en")}
           >
-            <img src="images/US.svg" alt="flag" className="w-6 h-6" />
+            <img src="/images/US.svg" alt="flag" className="w-6 h-6" />
             <button className="ml-2 text-white pointer-events-none">EN</button>
           </div>
         ) : (
@@ -77,7 +77,7 @@ const Header = ({ hideLoggingInfo }: { hideLoggingInfo?: boolean }) => {
             className="flex items-center cursor-pointer mr-4"
             onClick={() => changeLanguage("tr")}
           >
-            <img src="images/TR.svg" alt="flag" className="w-6 h-6" />
+            <img src="/images/TR.svg" alt="flag" className="w-6 h-6" />
             <button className="ml-2 text-white pointer-events-none">TR</button>
           </div>
         )}
