@@ -3,9 +3,7 @@ import { PrismaClient, User } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
-interface DecodedToken {
-  userId: number;
-}
+import authCheck from "@/middleware/authCheck";
 
 interface UpdateData {
   email?: User["email"];
@@ -36,16 +34,7 @@ export default async function handleLogin(
       return;
     }
 
-    if (!req.headers.authorization) {
-      throw new Error("Unauthorized");
-    }
-    const tokenWithBearer = req.headers.authorization as string;
-    const token = tokenWithBearer.split(" ")[1];
-    const decodedToken = jwt.verify(
-      token,
-      process.env.API_KEY || ""
-    ) as DecodedToken;
-    const userId = decodedToken.userId;
+    const userId = await authCheck(req, res);
 
     const user = await prisma.user.findUnique({ where: { id: userId } });
     if (!user) {
