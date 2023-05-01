@@ -9,7 +9,7 @@ const authCheck = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!req.headers.authorization) {
     throw new Error("Unauthorized");
   }
-  const tokenWithBearer = req.headers.authorization as string;
+  const tokenWithBearer = req.headers.authorization;
   const token = tokenWithBearer.split(" ")[1];
   const decodedToken = jwt.verify(
     token,

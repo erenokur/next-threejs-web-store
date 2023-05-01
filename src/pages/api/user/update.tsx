@@ -1,9 +1,9 @@
-import Cors from "cors";
 import { PrismaClient, User } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
-import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import authCheck from "@/middleware/authCheck";
+import corsCheck from "@/middleware/corsCheck";
+import { createUserData } from "@/utilities/createUserData.tsx";
 
 interface UpdateData {
   email?: User["email"];
@@ -13,21 +13,13 @@ interface UpdateData {
 }
 
 const prisma = new PrismaClient();
-const cors = Cors({
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-});
 
 export default async function handleLogin(
   req: NextApiRequest,
   res: NextApiResponse
 ): Promise<void> {
   try {
-    await new Promise<void>((resolve, reject) => {
-      cors(req, res, (err) => {
-        if (err) return reject(err);
-        resolve();
-      });
-    });
+    await corsCheck(req, res);
 
     if (req.method !== "PUT") {
       res.status(405).json({ message: "Method not allowed" });
@@ -41,13 +33,11 @@ export default async function handleLogin(
       throw new Error("Invalid user ID");
     }
 
-    const { email, username, password, role } = req.body;
-    const data: UpdateData = {};
-    if (email !== null && email !== undefined) data.email = email;
-    if (username !== null && username !== undefined) data.username = username;
-    if (password !== null && password !== undefined)
-      data.password = await bcrypt.hash(password, 10);
-    if (role !== null && role !== undefined) data.role = role;
+    const data = createUserData(req.body);
+
+    if (data.password) {
+      data.password = await bcrypt.hash(data.password, 10);
+    }
 
     const updatedUser = await prisma.user.update({
       where: { id: userId },
