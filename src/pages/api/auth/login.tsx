@@ -1,25 +1,17 @@
-import Cors from "cors";
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcrypt";
 import { NextApiRequest, NextApiResponse } from "next";
 import jwt from "jsonwebtoken";
+import corsCheck from "@/middleware/corsCheck";
 
 const prisma = new PrismaClient();
-const cors = Cors({
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-});
 
 export default async function handleLogin(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   try {
-    await new Promise((resolve, reject) => {
-      cors(req, res, (err) => {
-        if (err) return reject(err);
-        resolve(true);
-      });
-    });
+    await corsCheck(req, res);
     if (req.method !== "POST") {
       res.status(405).json({ message: "Method not allowed" });
       return;
