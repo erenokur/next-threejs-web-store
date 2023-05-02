@@ -1,13 +1,79 @@
-import React, { useEffect } from "react";
+import React, { ChangeEvent, MouseEvent, useState } from "react";
 import { useRouter } from "next/router";
+import { AxiosClient } from "@/middleware/api";
+import { useAuth } from "@/contexts/AuthContext";
 
 const ProductAdd: React.FC = () => {
   const router = useRouter();
+  const { getToken } = useAuth();
+  const [file, setFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const apiClient = new AxiosClient(
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/`,
+    {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
+    }
+  );
+  const onFileUploadChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const fileInput = e.target;
 
-  const handleProductClick = (productId: number) => {
-    router.push(`/product/${productId}`);
+    if (!fileInput.files) {
+      alert("No file was chosen");
+      return;
+    }
+
+    if (!fileInput.files || fileInput.files.length === 0) {
+      alert("Files list is empty");
+      return;
+    }
+
+    const file = fileInput.files[0];
+
+    /** File validation */
+    if (!file.type.startsWith("image")) {
+      alert("Please select a valide image");
+      return;
+    }
+
+    /** Setting file state */
+    setFile(file); // we will use the file state, to send it later to the server
+    setPreviewUrl(URL.createObjectURL(file)); // we will use this to show the preview of the image
+
+    /** Reset file input */
+    e.currentTarget.type = "text";
+    e.currentTarget.type = "file";
   };
 
+  const onCancelFile = (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    if (!previewUrl && !file) {
+      return;
+    }
+    setFile(null);
+    setPreviewUrl(null);
+  };
+  const onUploadFile = async (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+
+    if (!file) {
+      return;
+    }
+
+    try {
+      let formData = new FormData();
+      formData.append("media", file);
+
+      const response = await apiClient.post("/upload", {
+        body: formData,
+      });
+
+      console.log("File was uploaded successfully:", response);
+    } catch (error) {
+      console.error(error);
+      alert("Sorry! something went wrong.");
+    }
+  };
   return (
     <div>
       <title>File uploader</title>
@@ -40,11 +106,17 @@ const ProductAdd: React.FC = () => {
                   />
                 </svg>
                 <strong className="text-sm font-medium">Select an image</strong>
-                <input className="block w-0 h-0" name="file" type="file" />
+                <input
+                  className="block w-0 h-0"
+                  name="file"
+                  type="file"
+                  onChange={onFileUploadChange}
+                />
               </label>
               <div className="flex mt-4 md:mt-0 md:flex-col justify-center gap-1.5">
                 <button
-                  disabled={true}
+                  disabled={!previewUrl}
+                  onClick={onCancelFile}
                   className="w-1/2 px-4 py-3 text-sm font-medium
                    text-white transition-colors duration-300
                     bg-gray-700 rounded-sm md:w-auto md:text-base
@@ -53,7 +125,8 @@ const ProductAdd: React.FC = () => {
                   Cancel file
                 </button>
                 <button
-                  disabled={true}
+                  disabled={!previewUrl}
+                  onClick={onUploadFile}
                   className="w-1/2 px-4 py-3 text-sm font-medium
                    text-white transition-colors duration-300
                     bg-gray-700 rounded-sm md:w-auto md:text-base
