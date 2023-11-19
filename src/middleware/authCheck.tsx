@@ -1,23 +1,23 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { getSession } from "next-auth/react";
+import jwt from "jsonwebtoken";
+
+interface DecodedToken {
+  userId: number;
+}
 
 const authCheck = async (req: NextApiRequest, res: NextApiResponse) => {
-  const session = await getSession({ req });
-
-  if (!session) {
-    return {
-      redirect: {
-        destination: "/login",
-        permanent: false,
-      },
-    };
+  if (!req.headers.authorization) {
+    throw new Error("Unauthorized");
   }
+  const tokenWithBearer = req.headers.authorization;
+  const token = tokenWithBearer.split(" ")[1];
+  const decodedToken = jwt.verify(
+    token,
+    process.env.API_KEY || ""
+  ) as DecodedToken;
+  const userId = decodedToken.userId;
 
-  return {
-    props: {
-      user: session.user,
-    },
-  };
+  return userId;
 };
 
 export default authCheck;

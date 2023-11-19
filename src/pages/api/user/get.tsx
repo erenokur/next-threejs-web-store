@@ -1,44 +1,22 @@
-import Cors from "cors";
 import { PrismaClient } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
-import jwt from "jsonwebtoken";
-
-interface DecodedToken {
-  userId: number;
-}
+import authCheck from "@/middleware/authCheck";
+import corsCheck from "@/middleware/corsCheck";
 
 const prisma = new PrismaClient();
-const cors = Cors({
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-});
 
 export default async function handleLogin(
   req: NextApiRequest,
   res: NextApiResponse
 ): Promise<void> {
   try {
-    await new Promise<void>((resolve, reject) => {
-      cors(req, res, (err) => {
-        if (err) return reject(err);
-        resolve();
-      });
-    });
+    await corsCheck(req, res);
 
     if (req.method !== "GET") {
       res.status(405).json({ message: "Method not allowed" });
       return;
     }
-
-    if (!req.headers.authorization) {
-      throw new Error("Unauthorized");
-    }
-    const tokenWithBearer = req.headers.authorization as string;
-    const token = tokenWithBearer.split(" ")[1];
-    const decodedToken = jwt.verify(
-      token,
-      process.env.API_KEY || ""
-    ) as DecodedToken;
-    const userId = decodedToken.userId;
+    const userId = await authCheck(req, res);
 
     const user = await prisma.user.findUnique({ where: { id: userId } });
     if (!user) {
