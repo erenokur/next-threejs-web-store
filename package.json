@@ -38,7 +38,7 @@
     "next": "13.3.1",
     "next-auth": "^4.22.1",
     "next-i18next": "^13.2.2",
-    "postcss": "8.4.23",
+    "postcss": "8.4.31",
     "prisma": "^4.13.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
